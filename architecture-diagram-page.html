@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arquitectura ParkingShare</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Mermaid JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.6.1/mermaid.min.js"></script>
+</head>
+<body class="bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">ParkingShare</a>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h2 class="mb-0">Diagrama de Arquitectura</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="mermaid">
+                            flowchart TD
+                                subgraph Client["Frontend (React)"]
+                                    UI["UI Components\n(Material-UI)"]
+                                    Redux["Estado Global\n(Redux)"]
+                                    Maps["Mapas\n(Google Maps API)"]
+                                    Socket_Client["Socket.io Client"]
+                                end
+
+                                subgraph Server["Backend (Node.js/Express)"]
+                                    API["API REST"]
+                                    Auth["Autenticación\n(JWT)"]
+                                    Socket_Server["Socket.io Server"]
+                                    Upload["Servicio de\nImágenes"]
+                                end
+
+                                subgraph Database["Bases de Datos"]
+                                    PostgreSQL["PostgreSQL\n- Usuarios\n- Espacios\n- Reservas\n- Pagos"]
+                                    MongoDB["MongoDB\n- Chats\n- Notificaciones"]
+                                end
+
+                                subgraph Services["Servicios Externos"]
+                                    S3["AWS S3\nAlmacenamiento\nde imágenes"]
+                                    Payment["Pasarela de\nPagos (Stripe)"]
+                                    Maps_API["Google Maps\nAPI"]
+                                end
+
+                                Client --> Server
+                                Server --> Database
+                                Server --> Services
+                                Socket_Client <--> Socket_Server
+                                UI --> Redux
+                                UI --> Maps
+                                API --> Auth
+                                API --> Upload
+                                Upload --> S3
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        <h3 class="mb-0">Detalles de la Arquitectura</h3>
+                    </div>
+                    <div class="card-body">
+                        <h4>Componentes Principales</h4>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <strong>Frontend (React)</strong>
+                                <p class="mb-0">Interfaz de usuario construida con React y Material-UI, utilizando Redux para la gestión del estado y Socket.io para comunicación en tiempo real.</p>
+                            </li>
+                            <li class="list-group-item">
+                                <strong>Backend (Node.js/Express)</strong>
+                                <p class="mb-0">Servidor REST API con autenticación JWT y servicios de carga de archivos.</p>
+                            </li>
+                            <li class="list-group-item">
+                                <strong>Bases de Datos</strong>
+                                <p class="mb-0">PostgreSQL para datos estructurados y MongoDB para mensajes y notificaciones.</p>
+                            </li>
+                            <li class="list-group-item">
+                                <strong>Servicios Externos</strong>
+                                <p class="mb-0">Integración con AWS S3, Stripe para pagos y Google Maps API.</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-dark text-white mt-5">
+        <div class="container py-3">
+            <p class="text-center mb-0">© 2024 ParkingShare - Diagrama de Arquitectura</p>
+        </div>
+    </footer>
+
+    <script>
+        // Configuración e inicialización de Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+    </script>
+
+    <!-- Bootstrap Bundle con Popper -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
